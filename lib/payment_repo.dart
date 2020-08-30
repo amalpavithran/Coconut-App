@@ -8,10 +8,10 @@ abstract class PaymentRepository {
 
 class Payment implements PaymentRepository {
   @override
-  Future<Map<String, String>> initiatePayment(PaymentDetails details) {
+  Future<Map<String, String>> initiatePayment(PaymentDetails details) async {
     UpiIndia _upiIndia = UpiIndia();
     Map<String, String> response;
-
+    response["Status"] = "Loading";
     return _upiIndia
         .startTransaction(
             app: UpiApp.GooglePay,
