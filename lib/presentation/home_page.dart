@@ -29,17 +29,19 @@ class HomePage extends StatelessWidget {
         body: CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
-            title: Text('My Account'),
-            expandedHeight: 150,
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: IconButton(
-                    iconSize: 35,
-                    icon: Icon(Icons.account_circle, color: Colors.white),
-                    onPressed: null),
+          title: Text('My Account'),
+          expandedHeight: 150,
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                iconSize: 35,
+                icon: Icon(Icons.account_circle, color: Colors.white),
+                onPressed: null,
               ),
-            ])
+            ),
+          ],
+        ),
       ],
     ));
   }

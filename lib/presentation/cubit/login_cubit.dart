@@ -8,7 +8,7 @@ class LoginCubit extends Cubit<LoginState> {
   final AuthRepository authRepository;
   LoginCubit(this.authRepository) : super(LoginInitial());
 
-  void login(String phoneNumber, String password) async {
+  void login() async {
     emit(LoginLoading());
     try {
       final result = await authRepository.login();
