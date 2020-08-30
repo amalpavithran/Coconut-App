@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseApp app = await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       home: LoginPage(),
       routes: {
-        '\homepage': (context)=>HomePage(),
+        "/homepage": (context)=>HomePage(),
       },
     );
   }
