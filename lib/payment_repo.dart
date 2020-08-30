@@ -13,7 +13,7 @@ class Payment implements PaymentRepository {
   Future<Map<String, String>> initiatePayment(
       PaymentDetails details, String groupId) async {
     UpiIndia _upiIndia = UpiIndia();
-    Map<String, String> response;
+    Map<String, String> response = {};
     response["Status"] = "Loading";
     return _upiIndia
         .startTransaction(
