@@ -1,5 +1,7 @@
 import 'package:coconut_app/group_repo.dart';
+import 'package:coconut_app/models/pay_details.dart';
 import 'package:coconut_app/models/user.dart';
+import 'package:coconut_app/payment_repo.dart';
 import 'package:coconut_app/presentation/cubit/home_cubit.dart';
 import 'package:coconut_app/presentation/join_group_page.dart';
 import 'package:flutter/material.dart';
@@ -107,9 +109,21 @@ class _HomePageState extends State<HomePage> {
                         )
                       ],
                     ),
-                  ),
+                    
+                  ),RaisedButton(
+                          color: Colors.blue[200],
+                          child: Text(
+                            "Make Payment",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {
+                            final PaymentRepository paymentRepository = Payment();
+                            paymentRepository.initiatePayment(PaymentDetails(recieverUpiID: 'amal110100@oksbi', recieverName: 'Amal Pavithran', transactionNote: 'Testing', amount: 1), 'test');
+                          },
+                        ),
                   groupList,
                 ],
+                
               );
             },
           ),

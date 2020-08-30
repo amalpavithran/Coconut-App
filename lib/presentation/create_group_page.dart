@@ -71,6 +71,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                           _formKey.currentState.save();
                           final GroupRepository groupRepository = Group();
                           groupRepository.createGroup(_groupName, _groupDesc);
+                          Navigator.pop(context);
                         }
                       },
                     ))
