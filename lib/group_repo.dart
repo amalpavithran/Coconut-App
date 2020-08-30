@@ -22,7 +22,7 @@ class Group implements GroupRepository {
         await callable.call(data).catchError((e) {
       return e;
     });
-    return "Success";
+    return response.data;
   }
 
   @override
