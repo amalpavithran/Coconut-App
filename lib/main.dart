@@ -3,7 +3,9 @@ import 'package:coconut_app/presentation/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() async{
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseApp app = await Firebase.initializeApp();
   runApp(MyApp());
 }
 
