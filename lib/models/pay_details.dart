@@ -11,12 +11,4 @@ class PaymentDetails {
       @required this.recieverName,
       @required this.transactionNote,
       @required this.amount});
-
-  factory PaymentDetails.fromJson(Map<String, dynamic> json) {
-    return PaymentDetails(
-        recieverUpiID: null,
-        recieverName: null,
-        transactionNote: null,
-        amount: null);
-  }
 }
