@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                     } else if (state is LoginSuccess) {
                       Scaffold.of(context).showSnackBar(
                           SnackBar(content: Text("Login Success")));
-                      //TODO: Implement Push to Home
+                      Navigator.popAndPushNamed(context, '/homepage');
                     }
                   },
                 ),
