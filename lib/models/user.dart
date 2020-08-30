@@ -1,18 +1,10 @@
 import 'package:flutter/foundation.dart';
 
 class UserDetails {
+  final String email;
   final String name;
-  final String placeholder;
+  final String photoURL;
 
-  UserDetails({
-    @required this.name,
-    @required this.placeholder,
-  });
-
-  factory UserDetails.fromJson(Map<String, dynamic> json) {
-    return UserDetails(
-      name: null,
-      placeholder: null,
-    );
-  }
+  UserDetails(
+      {@required this.email, @required this.name, @required this.photoURL});
 }

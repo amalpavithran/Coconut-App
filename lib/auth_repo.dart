@@ -2,9 +2,15 @@ import 'package:coconut_app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'models/user.dart';
+import 'models/user.dart';
+import 'models/user.dart';
+import 'models/user.dart';
+
 abstract class AuthRepository {
   Future<String> login();
   Future<String> logout();
+  UserDetails getUserDetails();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -32,5 +38,13 @@ class AuthRepositoryImpl implements AuthRepository {
       return e;
     });
     return "Success";
+  }
+
+  @override
+  UserDetails getUserDetails() {
+    User _user = FirebaseAuth.instance.currentUser;
+    UserDetails userDetails = UserDetails(
+        email: _user.email, name: _user.displayName, photoURL: _user.photoURL);
+    return userDetails;
   }
 }
