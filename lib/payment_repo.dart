@@ -1,14 +1,17 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coconut_app/models/pay_details.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:upi_india/upi_india.dart';
 
 abstract class PaymentRepository {
-  Future<Map<String, String>> initiatePayment(
-      PaymentDetails details); // Returns a response, Success, Failure+error
+  Future<Map<String, String>> initiatePayment(PaymentDetails details,
+      String groupId); // Returns a response, Success, Failure+error
 }
 
 class Payment implements PaymentRepository {
   @override
-  Future<Map<String, String>> initiatePayment(PaymentDetails details) async {
+  Future<Map<String, String>> initiatePayment(
+      PaymentDetails details, String groupId) async {
     UpiIndia _upiIndia = UpiIndia();
     Map<String, String> response;
     response["Status"] = "Loading";
@@ -19,7 +22,7 @@ class Payment implements PaymentRepository {
             receiverName: details.recieverName,
             transactionNote: details.transactionNote,
             amount: details.amount)
-        .then((_upiResponse) {
+        .then((_upiResponse) async {
       print(_upiResponse);
       if (_upiResponse.error != null) {
         response["Status"] = "Failure";
@@ -37,8 +40,25 @@ class Payment implements PaymentRepository {
             response["Report"] = "You cancelled the transaction";
             break;
         }
-      } else
+      } else {
         response["Status"] = "Success";
+        Map data = {
+          "data": {
+            "groupId": groupId,
+            "transaction": {
+              "spender": FirebaseAuth.instance.currentUser.uid,
+              "amount": details.amount
+            }
+          }
+        };
+        final HttpsCallable callable = CloudFunctions.instance
+            .getHttpsCallable(functionName: "addTransaction");
+        final HttpsCallableResult fnresponse =
+            await callable.call(data).catchError((e) {
+          response["Status"] = "Failure";
+          response["Report"] = e;
+        });
+      }
       return response;
     });
   }
