@@ -3,13 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthRepository {
-  Future<void> login();
-  Future<void> logout();
+  Future<String> login();
+  Future<String> logout();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
   @override
-  Future<void> login() async {
+  Future<String> login() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -20,11 +20,17 @@ class AuthRepositoryImpl implements AuthRepository {
       idToken: googleAuth.idToken,
     );
 
-    await _auth.signInWithCredential(credential);
+    await _auth.signInWithCredential(credential).catchError((e) {
+      return e;
+    });
+    return "Success";
   }
 
   @override
-  Future<void> logout() async {
-    await FirebaseAuth.instance.signOut();
+  Future<String> logout() async {
+    await FirebaseAuth.instance.signOut().catchError((e) {
+      return e;
+    });
+    return "Success";
   }
 }
