@@ -15,7 +15,7 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginSuccess());
     } catch (e) {
       print(e);
-      LoginFailure("Login Failure");
+      emit(LoginFailure("Login Failure"));
     }
   }
 }

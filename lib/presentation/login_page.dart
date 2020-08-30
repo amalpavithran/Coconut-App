@@ -40,7 +40,6 @@ class _LoginPageState extends State<LoginPage> {
     final password = Padding(
       padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 10.0),
       child: TextFormField(
-        enabled: false,
         onSaved: (value) {
           this._password = value;
         },
@@ -55,48 +54,70 @@ class _LoginPageState extends State<LoginPage> {
                 OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
       ),
     );
+
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => LoginCubit(AuthRepositoryImpl()),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              phoneNumber,
-              password,
-              BlocBuilder<LoginCubit, LoginState>(
-                builder: (context, state) {
-                  if (state is LoginLoading) {
-                    return Container(
-                      height: 50,
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    return RaisedButton(
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
-                          BlocProvider.of<LoginCubit>(context)
-                              .login(_phoneNumber, _password);
-                        }
-                      },
-                      child: Text("Login"),
-                    );
-                  }
-                },
+      body: SafeArea(
+        child: BlocProvider(
+          create: (context) => LoginCubit(AuthRepositoryImpl()),
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height / 3,
+                      child: Placeholder(),
+                    ),
+                  ),
+                  phoneNumber,
+                  password,
+                  BlocConsumer<LoginCubit, LoginState>(
+                    builder: (context, state) {
+                      if (state is LoginLoading) {
+                        return Container(
+                          height: 50,
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            child: RaisedButton(
+                              color: Colors.blue,
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  _formKey.currentState.save();
+                                  BlocProvider.of<LoginCubit>(context)
+                                      .login(_phoneNumber, _password);
+                                }
+                              },
+                              child: Text("Login",style: TextStyle(color: Colors.white),),
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    listener: (BuildContext context, LoginState state) {
+                      if (state is LoginFailure) {
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text(state.message)));
+                      } else if (state is LoginSuccess) {
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text("Login Success")));
+                        //TODO: Implement Push to Home
+                      }
+                    },
+                  ),
+                  SizedBox(height:20),
+                ],
               ),
-              BlocListener<LoginCubit, LoginState>(
-                listener: (BuildContext context, LoginState state) {
-                  if (state is LoginFailure) {
-                    Scaffold.of(context)
-                        .showSnackBar(SnackBar(content: Text(state.message)));
-                  }else if(state is LoginSuccess){
-                    Scaffold.of(context).showSnackBar(SnackBar(content: Text("Login Success")));
-                    //TODO: Implement Push to Home
-                  }
-                },
-              )
-            ],
+            ),
           ),
         ),
       ),
