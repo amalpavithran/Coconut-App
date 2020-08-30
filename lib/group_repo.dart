@@ -20,7 +20,7 @@ class Group implements GroupRepository {
         CloudFunctions.instance.getHttpsCallable(functionName: "createGroup");
     final HttpsCallableResult response =
         await callable.call(data).catchError((e) {
-      return e;
+      return e.toString();
     });
     return response.data;
   }
