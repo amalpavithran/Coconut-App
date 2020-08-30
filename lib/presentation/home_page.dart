@@ -6,11 +6,21 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:CustomScrollView(slivers: <Widget>[
+        body: CustomScrollView(
+      slivers: <Widget>[
         SliverAppBar(
-          
-        )
-      ],)
-    );
+            title: Text('My Account'),
+            expandedHeight: 150,
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: IconButton(
+                    iconSize: 35,
+                    icon: Icon(Icons.account_circle, color: Colors.white),
+                    onPressed: null),
+              ),
+            ])
+      ],
+    ));
   }
 }

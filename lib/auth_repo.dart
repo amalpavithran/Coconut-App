@@ -1,10 +1,12 @@
-import 'package:coconut_app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'models/user_groups.dart';
 
 abstract class AuthRepository {
   Future<String> login();
   Future<String> logout();
+  Future<List<UserGroups>> fetchGroups();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -32,5 +34,11 @@ class AuthRepositoryImpl implements AuthRepository {
       return e;
     });
     return "Success";
+  }
+
+  @override
+  Future<List<UserGroups>> fetchGroups() {
+    // TODO: implement fetchGroups
+    throw UnimplementedError();
   }
 }
