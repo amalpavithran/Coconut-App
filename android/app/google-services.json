@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "580561247379",
+    "firebase_url": "https://coconut-c4b2e.firebaseio.com",
+    "project_id": "coconut-c4b2e",
+    "storage_bucket": "coconut-c4b2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580561247379:android:e8e71aca5c78172b92c166",
+        "android_client_info": {
+          "package_name": "com.example.coconut_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580561247379-5t31ee917ek6fl1nqpgueljjf9mabnng.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.coconut_app",
+            "certificate_hash": "b1ad83355aae06b6752c20428209f1841216eadc"
+          }
+        },
+        {
+          "client_id": "580561247379-pej8fbmkaat2vjou36ui25o5v1d1fp8h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.coconut_app",
+            "certificate_hash": "9f4157fb0bd7947884599886ce7b1610370c9067"
+          }
+        },
+        {
+          "client_id": "580561247379-g6fsua1ju33els985j8tql6pi5hioq6g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqNs4qnp-uEqlEe_Hf8AJsyhZXXoAkuuQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580561247379-g6fsua1ju33els985j8tql6pi5hioq6g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
