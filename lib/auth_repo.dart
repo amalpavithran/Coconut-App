@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -25,6 +26,15 @@ class AuthRepositoryImpl implements AuthRepository {
     await _auth.signInWithCredential(credential).catchError((e) {
       return e;
     });
+
+    final HttpsCallable callable =
+        CloudFunctions.instance.getHttpsCallable(functionName: "endTrip");
+    final HttpsCallableResult response = await callable.call().catchError((e) {
+      return e;
+    });
+    if (response.data["message"] == "Ended") {
+      //Implement get payments}
+    }
     return "Success";
   }
 
