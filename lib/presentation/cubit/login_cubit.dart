@@ -12,7 +12,11 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginLoading());
     try {
       final result = await authRepository.login();
-      emit(LoginSuccess());
+      if (result == "Success") {
+        emit(LoginSuccess());
+      } else {
+        emit(LoginFailure(result));
+      }
     } catch (e) {
       print(e);
       emit(LoginFailure("Login Failure"));
