@@ -1,4 +1,6 @@
+import 'package:coconut_app/presentation/create_group_page.dart';
 import 'package:coconut_app/presentation/home_page.dart';
+import 'package:coconut_app/presentation/join_group_page.dart';
 import 'package:coconut_app/presentation/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,8 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
       routes: {
         "/homepage": (context) => HomePage(),
+        "/joingroup": (context) => JoinGroup(),
+        "/creategroup": (context) => CreateGroupPage(),
       },
     );
   }
