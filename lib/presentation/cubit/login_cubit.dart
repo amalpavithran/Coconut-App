@@ -11,7 +11,7 @@ class LoginCubit extends Cubit<LoginState> {
   void login(String phoneNumber, String password) async {
     emit(LoginLoading());
     try {
-      final result = await authRepository.login(phoneNumber, password);
+      final result = await authRepository.login();
       emit(LoginSuccess());
     } catch (e) {
       print(e);

@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 
-class User {
+class UserDetails {
   final String name;
   final String placeholder;
 
-  User({
+  UserDetails({
     @required this.name,
     @required this.placeholder,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory UserDetails.fromJson(Map<String, dynamic> json) {
+    return UserDetails(
       name: null,
       placeholder: null,
     );
