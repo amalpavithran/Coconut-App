@@ -27,13 +27,27 @@ class AuthRepositoryImpl implements AuthRepository {
       return e;
     });
 
-    // final HttpsCallable callable =
-    //     CloudFunctions.instance.getHttpsCallable(functionName: "getUser");
-    // final HttpsCallableResult res =
-    //     await callable.call(_auth.currentUser.uid).catchError((e) {
-    //   return e;
-    // });
-    // print(res.data);
+    Map data = {
+      "uid": _auth.currentUser.uid,
+      "name": _auth.currentUser.displayName,
+      "upiId": "null",
+      "email": _auth.currentUser.email
+    };
+
+    final HttpsCallable callablelogin =
+        CloudFunctions.instance.getHttpsCallable(functionName: "login");
+    final HttpsCallableResult res =
+        await callablelogin.call(data).catchError((e) {
+      return e;
+    });
+
+    final HttpsCallable callable =
+        CloudFunctions.instance.getHttpsCallable(functionName: "getUser");
+    final HttpsCallableResult response =
+        await callable.call({"uid": _auth.currentUser.uid}).catchError((e) {
+      return e;
+    });
+    print(response.data);
 
     // final HttpsCallable callable =
     //     CloudFunctions.instance.getHttpsCallable(functionName: "endTrip");
