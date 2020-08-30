@@ -8,12 +8,11 @@ abstract class PaymentRepository {
 
 class Payment implements PaymentRepository {
   @override
-  // ignore: missing_return
   Future<Map<String, String>> initiatePayment(PaymentDetails details) {
     UpiIndia _upiIndia = UpiIndia();
     Map<String, String> response;
 
-    _upiIndia
+    return _upiIndia
         .startTransaction(
             app: UpiApp.GooglePay,
             receiverUpiId: details.recieverUpiID,
