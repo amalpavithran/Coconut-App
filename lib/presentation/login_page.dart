@@ -31,10 +31,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: BlocConsumer<LoginCubit, LoginState>(
                   builder: (context, state) {
                     if (state is LoginLoading) {
-                      return Container(
-                        height: 50,
-                        child: CircularProgressIndicator(),
-                      );
+                      return CircularProgressIndicator();
                     } else {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
