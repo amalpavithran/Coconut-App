@@ -11,8 +11,8 @@ class Payment implements PaymentRepository {
   Future<Map<String, String>> initiatePayment(PaymentDetails details) async {
     UpiIndia _upiIndia = UpiIndia();
     Map<String, String> response;
-
-    _upiIndia
+    response["Status"] = "Loading";
+    return _upiIndia
         .startTransaction(
             app: UpiApp.GooglePay,
             receiverUpiId: details.recieverUpiID,
@@ -41,7 +41,5 @@ class Payment implements PaymentRepository {
         response["Status"] = "Success";
       return response;
     });
-    response["Status"] = "Loading";
-    return response;
   }
 }
