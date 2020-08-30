@@ -11,26 +11,45 @@ class HomePage extends StatelessWidget {
           email: "hemanth@gmail.com",
           name: "Hemanth",
           photoURL: null,
-          groups: null)
+          groups: null),
+      UserDetails(
+          email: "amal@gmail.com", name: "Amal", photoURL: null, groups: null)
     ];
     List<Widget> groupWids = [];
     for (var user in users) {
-      groupWids.add(Card(
-        child: Text(user.email),
-      ));
+      groupWids.add(Padding(
+          padding: EdgeInsets.fromLTRB(0, 5, 5, 0),
+          child: Card(
+            child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 40,
+                child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(user.email),
+                          Padding(
+                            padding: EdgeInsets.only(left: 5),
+                            child: Text(user.name),
+                          ),
+                          Spacer(),
+                          Text("Amount")
+                        ]))),
+          )));
     }
     Widget groupList = SingleChildScrollView(
-      child: Column(
-        children: groupWids,
-      ),
+      child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: groupWids,
+          )),
     );
 
     return Scaffold(
-        body: CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar(
+        appBar: AppBar(
           title: Text('My Account'),
-          expandedHeight: 150,
+          toolbarHeight: 150,
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -42,7 +61,6 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-      ],
-    ));
+        body: Padding(padding: EdgeInsets.only(top: 20), child: groupList));
   }
 }
