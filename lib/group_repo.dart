@@ -22,7 +22,7 @@ class Group implements GroupRepository {
   }
 
   @override
-  Future<void> joinGroup() {
+  Future<void> joinGroup(String groupid) {
     // TODO: implement joinGroup
     throw UnimplementedError();
   }
