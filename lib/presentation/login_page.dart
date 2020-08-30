@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
         decoration: InputDecoration(
             enabledBorder:
                 OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-            labelText: "Roll Number",
+            labelText: "Phone Number",
             border: OutlineInputBorder()),
       ),
     );
