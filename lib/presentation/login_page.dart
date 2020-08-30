@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               SizedBox(
                 height: MediaQuery.of(context).size.height,
-                child: Placeholder(),
+                child: Image.asset('assets/splash.png',fit: BoxFit.cover),
               ),
               Align(
                 alignment: Alignment.bottomCenter - Alignment(0, 0.15),
@@ -36,12 +36,11 @@ class _LoginPageState extends State<LoginPage> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
-                          height: 50,
-                          width: double.infinity,
-                          child: SignInButton(Buttons.Google, onPressed: (){
-                            BlocProvider.of<LoginCubit>(context).login();
-                          })
-                        ),
+                            height: 50,
+                            width: double.infinity,
+                            child: SignInButton(Buttons.Google, onPressed: () {
+                              BlocProvider.of<LoginCubit>(context).login();
+                            })),
                       );
                     }
                   },
