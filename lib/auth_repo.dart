@@ -27,14 +27,14 @@ class AuthRepositoryImpl implements AuthRepository {
       return e;
     });
 
-    final HttpsCallable callable =
-        CloudFunctions.instance.getHttpsCallable(functionName: "endTrip");
-    final HttpsCallableResult response = await callable.call().catchError((e) {
-      return e;
-    });
-    if (response.data["message"] == "Ended") {
-      //Implement get payments}
-    }
+    // final HttpsCallable callable =
+    //     CloudFunctions.instance.getHttpsCallable(functionName: "endTrip");
+    // final HttpsCallableResult response = await callable.call().catchError((e) {
+    //   return e;
+    // });
+    // if (response.data["message"] == "Ended") {
+    //   //Implement get payments
+    // }
     return "Success";
   }
 
