@@ -1,8 +1,9 @@
 import 'package:coconut_app/presentation/home_page.dart';
 import 'package:coconut_app/presentation/login_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async{
   runApp(MyApp());
 }
 
@@ -16,6 +17,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: HomePage());
+        home: LoginPage());
   }
 }
