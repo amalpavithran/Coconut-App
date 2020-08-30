@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'models/user_groups.dart';
+import 'models/user.dart';
 
 abstract class AuthRepository {
   Future<String> login();
   Future<String> logout();
-  Future<List<UserGroups>> fetchGroups();
+  Future<UserDetails> getUserDetails();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -37,8 +37,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<List<UserGroups>> fetchGroups() {
-    // TODO: implement fetchGroups
-    throw UnimplementedError();
+  Future<UserDetails> getUserDetails() async {
+    User _user = FirebaseAuth.instance.currentUser;
+    UserDetails userDetails = UserDetails(
+        email: _user.email, name: _user.displayName, photoURL: _user.photoURL, groups: []); //TODO:Implement getting groups
+    return userDetails;
   }
 }
