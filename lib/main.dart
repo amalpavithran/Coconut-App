@@ -1,6 +1,5 @@
-import 'package:coconut_app/presentation/home_page/create_group_page.dart';
+import 'package:coconut_app/auth_repo.dart';
 import 'package:coconut_app/presentation/home_page/home_page.dart';
-import 'package:coconut_app/presentation/home_page/join_group_page.dart';
 import 'package:coconut_app/presentation/login_page/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +22,18 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginPage(),
+      home: buildHome(),
       routes: {
         "/homepage": (context) => HomePage(),
       },
     );
+  }
+
+  Widget buildHome() {
+    if (di.sl<AuthRepository>().silentLogin()) {
+      return HomePage();
+    } else {
+      return LoginPage();
+    }
   }
 }

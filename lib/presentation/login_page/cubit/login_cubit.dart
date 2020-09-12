@@ -12,8 +12,10 @@ class LoginCubit extends Cubit<LoginState> {
   void silentLogin() async{
     emit(LoginLoading());
     if(authRepository.silentLogin()){
+      print("Success");
       emit(LoginSuccess());
     }else{
+      print("Failure");
       SilentLoginFailure();
     }
   }
