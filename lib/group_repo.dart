@@ -9,6 +9,9 @@ abstract class GroupRepository {
 }
 
 class GroupRepositoryImpl implements GroupRepository {
+  final UserRepository userRepository;
+
+  GroupRepositoryImpl(this.userRepository);
   @override
   Future<String> createGroup(String groupName, String description) async {
     Map data = {
@@ -36,7 +39,7 @@ class GroupRepositoryImpl implements GroupRepository {
         await callable.call(data).catchError((e) {
       return e;
     });
-    UserRepositoryImpl.addGroup(response.data);
+    userRepository.addGroup(response.data);
     return "Success";
   }
 

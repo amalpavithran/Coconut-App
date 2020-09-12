@@ -12,6 +12,9 @@ abstract class AuthRepository {
 }
 
 class AuthRepositoryImpl implements AuthRepository {
+  final UserRepository userRepository;
+
+  AuthRepositoryImpl(this.userRepository);
   @override
   Future<UserDetails> login() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
@@ -44,13 +47,13 @@ class AuthRepositoryImpl implements AuthRepository {
     });
 
     User _firebaseuser = _auth.currentUser;
-    UserRepositoryImpl.updateUser(UserDetails(
+    userRepository.updateUser(UserDetails(
         email: _firebaseuser.email,
         name: _firebaseuser.displayName,
         photoURL: _firebaseuser.photoURL,
         upiID: response.data["upiId"]));
-    UserRepositoryImpl.updateGroup(response.data);
-    return UserRepositoryImpl.getCurrentUser();
+    userRepository.updateGroup(response.data);
+    return userRepository.getCurrentUser();
   }
 
   @override
