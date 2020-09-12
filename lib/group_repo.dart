@@ -1,8 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'models/user.dart';
-
 abstract class GroupRepository {
   Future<String> createGroup(String groupName, String description);
   Future<String> joinGroup(String groupid);

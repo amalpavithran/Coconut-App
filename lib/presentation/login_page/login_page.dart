@@ -1,8 +1,9 @@
-import 'package:coconut_app/auth_repo.dart';
-import 'package:coconut_app/presentation/cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+
+import '../../injection_container.dart';
+import 'cubit/login_cubit.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -17,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => LoginCubit(AuthRepositoryImpl()),
+        create: (context) => sl<LoginCubit>(),
         child: Form(
           key: _formKey,
           child: Stack(
@@ -45,6 +46,9 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                   listener: (BuildContext context, LoginState state) {
+                    if(state is LoginInitial){
+                      BlocProvider.of<LoginCubit>(context).init();
+                    }
                     if (state is LoginFailure) {
                       Scaffold.of(context)
                           .showSnackBar(SnackBar(content: Text(state.message)));

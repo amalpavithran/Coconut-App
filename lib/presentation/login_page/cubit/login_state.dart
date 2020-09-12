@@ -14,3 +14,5 @@ class LoginFailure extends LoginState {
 
   LoginFailure(this.message);
 }
+
+class SilentLoginFailure extends LoginState {}

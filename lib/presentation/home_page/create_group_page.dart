@@ -1,8 +1,7 @@
-import 'package:coconut_app/group_repo.dart';
-import 'package:coconut_app/injection_container.dart';
-import 'package:coconut_app/presentation/cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'cubit/home_cubit.dart';
 
 class CreateGroupPage extends StatefulWidget {
   CreateGroupPage({Key key}) : super(key: key);

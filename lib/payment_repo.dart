@@ -53,8 +53,7 @@ class PaymentRepositoryImpl implements PaymentRepository {
         };
         final HttpsCallable callable = CloudFunctions.instance
             .getHttpsCallable(functionName: "addTransaction");
-        final HttpsCallableResult fnresponse =
-            await callable.call(data).catchError((e) {
+        await callable.call(data).catchError((e) {
           response["Status"] = "Failure";
           response["Report"] = e;
         });

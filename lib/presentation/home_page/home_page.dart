@@ -1,7 +1,5 @@
 import 'package:coconut_app/models/pay_details.dart';
-import 'package:coconut_app/models/user.dart';
 import 'package:coconut_app/payment_repo.dart';
-import 'package:coconut_app/presentation/cubit/home_cubit.dart';
 import 'package:coconut_app/presentation/home_page/create_group_page.dart';
 import 'package:coconut_app/presentation/home_page/join_group_page.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../injection_container.dart';
+import '../styles.dart';
+import 'cubit/home_cubit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -20,55 +20,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    List<UserDetails> users = [
-      UserDetails(
-          email: "hemanth@gmail.com",
-          name: "Hemanth",
-          photoURL: null,
-          groups: null),
-      UserDetails(
-          email: "amal@gmail.com", name: "Amal", photoURL: null, groups: null)
-    ];
-    List<Widget> groupWids = [];
-    for (var user in users) {
-      groupWids.add(Padding(
-          padding: EdgeInsets.fromLTRB(0, 5, 5, 0),
-          child: Card(
-            child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(user.email),
-                          Padding(
-                            padding: EdgeInsets.only(left: 5),
-                            child: Text(user.name),
-                          ),
-                          Spacer(),
-                          Text("Amount")
-                        ]))),
-          )));
-    }
-    Widget groupList = SingleChildScrollView(
-      child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: groupWids,
-          )),
-    );
-    Widget _buildForm(HomeState state) {
-      if (state is ShowCreateGroup) {
-        return CreateGroupPage();
-      } else if (state is ShowJoinGroup) {
-        return JoinGroup();
-      } else {
-        return Container();
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text('My Account'),
@@ -92,58 +43,81 @@ class _HomePageState extends State<HomePage> {
             builder: (context, state) {
               return Column(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        RaisedButton(
-                            color: Colors.green,
-                            child: Text(
-                              "Create New Group",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () {
-                              BlocProvider.of<HomeCubit>(context)
-                                  .createGroupInit();
-                            }),
-                        RaisedButton(
-                          color: Colors.blue[200],
-                          child: Text(
-                            "Join a Group",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {
-                            BlocProvider.of<HomeCubit>(context).joinGroupInit();
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  RaisedButton(
-                    color: Colors.blue[200],
-                    child: Text(
-                      "Make Payment",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      sl<PaymentRepositoryImpl>().initiatePayment(
-                          PaymentDetails(
-                              recieverUpiID: 'amal110100@oksbi',
-                              recieverName: 'Amal Pavithran',
-                              transactionNote: 'Testing',
-                              amount: 1),
-                          'test');
-                    },
-                  ),
+                  buildCreateNewGroupBtn(context),
+                  buildMakePaymentBtn(),
                   _buildForm(state),
-                  groupList,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text("Recents", style: title),
+                    ),
+                  )
                 ],
               );
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildForm(HomeState state) {
+    if (state is ShowCreateGroup) {
+      return CreateGroupPage();
+    } else if (state is ShowJoinGroup) {
+      return JoinGroup();
+    } else {
+      return Container();
+    }
+  }
+
+  Widget buildMakePaymentBtn() {
+    return RaisedButton(
+      color: Colors.blue[200],
+      child: Text(
+        "Make Payment",
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        sl<PaymentRepositoryImpl>().initiatePayment(
+            PaymentDetails(
+                recieverUpiID: 'amal110100@oksbi',
+                recieverName: 'Amal Pavithran',
+                transactionNote: 'Testing',
+                amount: 1),
+            'test');
+      },
+    );
+  }
+
+  Widget buildCreateNewGroupBtn(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          RaisedButton(
+              color: Colors.green,
+              child: Text(
+                "Create New Group",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                BlocProvider.of<HomeCubit>(context).createGroupInit();
+              }),
+          RaisedButton(
+            color: Colors.blue[200],
+            child: Text(
+              "Join a Group",
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              BlocProvider.of<HomeCubit>(context).joinGroupInit();
+            },
+          )
+        ],
       ),
     );
   }

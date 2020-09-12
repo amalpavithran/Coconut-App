@@ -1,9 +1,8 @@
-import 'package:coconut_app/group_repo.dart';
-import 'package:coconut_app/presentation/cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../injection_container.dart';
+import 'cubit/home_cubit.dart';
+
 
 class JoinGroup extends StatefulWidget {
   JoinGroup({Key key}) : super(key: key);

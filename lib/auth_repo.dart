@@ -6,6 +6,7 @@ import 'models/user.dart';
 
 abstract class AuthRepository {
   Future<String> login();
+  Future<bool> silentLogin();
   Future<String> logout();
   Future<UserDetails> getUserDetails();
 }
@@ -36,8 +37,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
     final HttpsCallable callablelogin =
         CloudFunctions.instance.getHttpsCallable(functionName: "login");
-    final HttpsCallableResult res =
-        await callablelogin.call(data).catchError((e) {
+    await callablelogin.call(data).catchError((e) {
       return e;
     });
 
@@ -77,5 +77,10 @@ class AuthRepositoryImpl implements AuthRepository {
         photoURL: _user.photoURL,
         groups: []); //TODO:Implement getting groups
     return userDetails;
+  }
+
+  @override
+  Future<bool> silentLogin() async {
+    return (FirebaseAuth.instance.currentUser != null ? true : false);
   }
 }
