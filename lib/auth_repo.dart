@@ -28,7 +28,7 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     await _auth.signInWithCredential(credential).catchError((e) {
-      return e;
+      throw UnsupportedError(e);
     });
 
     Map data = {
@@ -43,7 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
         CloudFunctions.instance.getHttpsCallable(functionName: "login");
     final HttpsCallableResult response =
         await callable.call(data).catchError((e) {
-      return e;
+      throw UnsupportedError(e);
     });
 
     User _firebaseuser = _auth.currentUser;
@@ -59,7 +59,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<String> logout() async {
     await FirebaseAuth.instance.signOut().catchError((e) {
-      return e;
+      throw UnsupportedError(e);
     });
     return "Success";
   }
