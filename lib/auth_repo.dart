@@ -5,27 +5,13 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'models/user.dart';
 
 abstract class AuthRepository {
-  Future<String> login();
-  Future<bool> silentLogin();
+  Future<UserDetails> login();
   Future<String> logout();
-  Future<UserDetails> getUserDetails();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
   @override
-  Future<UserDetails> getUserDetails() async {
-    FirebaseAuth _auth = FirebaseAuth.instance;
-
-    final HttpsCallable callable =
-        CloudFunctions.instance.getHttpsCallable(functionName: "getUser");
-    final HttpsCallableResult response =
-        await callable.call({"uid": _auth.currentUser.uid}).catchError((e) {
-      return e;
-    });
-  }
-
-  @override
-  Future<String> login() async {
+  Future<UserDetails> login() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -54,7 +40,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return e;
     });
 
-    UserDetails user = await getUserDetails();
+    UserDetails _user = await getCurrentUser();
 
     print(response.data);
 
@@ -66,7 +52,7 @@ class AuthRepositoryImpl implements AuthRepository {
     // if (response.data["message"] == "Ended") {
     //   //Implement get payments
     // }
-    return "Success";
+    return _user;
   }
 
   @override
@@ -78,7 +64,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<bool> silentLogin() async {
-    return (FirebaseAuth.instance.currentUser != null ? true : false);
+  Future<UserDetails> getCurrentUser() async {
+    User _user = FirebaseAuth.instance.currentUser;
+    UserDetails userDetails = UserDetails(
+        email: _user.email,
+        name: _user.displayName,
+        photoURL: _user.photoURL,
+        groups: []); //TODO:Implement getting groups
+    return userDetails;
   }
 }
