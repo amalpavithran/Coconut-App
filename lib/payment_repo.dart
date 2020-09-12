@@ -4,18 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:upi_india/upi_india.dart';
 
 abstract class PaymentRepository {
-  Future<Map<String, String>> initiatePayment(PaymentDetails details,
+  Future<String> initiatePayment(PaymentDetails details,
       String groupId); // Returns a response, Success, Failure+error
   Future<String> endTrip(String groupid);
 }
 
 class PaymentRepositoryImpl implements PaymentRepository {
   @override
-  Future<Map<String, String>> initiatePayment(
-      PaymentDetails details, String groupId) async {
+  Future<String> initiatePayment(PaymentDetails details, String groupId) async {
     UpiIndia _upiIndia = UpiIndia();
-    Map<String, String> response = {};
-    response["Status"] = "Loading";
+    String response = "Success";
     _upiIndia
         .startTransaction(
             app: UpiApp.GooglePay,
@@ -26,23 +24,21 @@ class PaymentRepositoryImpl implements PaymentRepository {
         .then((_upiResponse) async {
       print(_upiResponse);
       if (_upiResponse.error != null) {
-        response["Status"] = "Failure";
         switch (_upiResponse.error) {
           case UpiError.APP_NOT_INSTALLED:
-            response["Report"] = "Requested app not installed on device";
+            response = "Requested app not installed on device";
             break;
           case UpiError.INVALID_PARAMETERS:
-            response["Report"] = "Requested app cannot handle the transaction";
+            response = "Requested app cannot handle the transaction";
             break;
           case UpiError.NULL_RESPONSE:
-            response["Report"] = "Requested app didn't returned any response";
+            response = "Requested app didn't returned any response";
             break;
           case UpiError.USER_CANCELLED:
-            response["Report"] = "You cancelled the transaction";
+            response = "You cancelled the transaction";
             break;
         }
       } else {
-        response["Status"] = "Success";
         Map data = {
           "groupId": groupId,
           "transaction": {
@@ -53,8 +49,7 @@ class PaymentRepositoryImpl implements PaymentRepository {
         final HttpsCallable callable = CloudFunctions.instance
             .getHttpsCallable(functionName: "addTransaction");
         await callable.call(data).catchError((e) {
-          response["Status"] = "Failure";
-          response["Report"] = e;
+          response = e;
         });
       }
     });
