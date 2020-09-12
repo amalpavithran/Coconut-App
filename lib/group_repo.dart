@@ -1,5 +1,4 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:coconut_app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class GroupRepository {
@@ -9,17 +8,6 @@ abstract class GroupRepository {
 }
 
 class GroupRepositoryImpl implements GroupRepository {
-  Future<UserDetails> _getUserDetails() async {
-    FirebaseAuth _auth = FirebaseAuth.instance;
-
-    final HttpsCallable callable =
-        CloudFunctions.instance.getHttpsCallable(functionName: "getUser");
-    final HttpsCallableResult response =
-        await callable.call({"uid": _auth.currentUser.uid}).catchError((e) {
-      return e;
-    });
-  }
-
   @override
   Future<String> createGroup(String groupName, String description) async {
     Map data = {
@@ -29,36 +17,43 @@ class GroupRepositoryImpl implements GroupRepository {
     };
     final HttpsCallable callable =
         CloudFunctions.instance.getHttpsCallable(functionName: "createGroup");
-    final HttpsCallableResult response =
-        await callable.call(data).catchError((e) {
+    await callable.call(data).catchError((e) {
       return e.toString();
     });
-    return response.data;
+    return "Success";
   }
 
   @override
   Future<String> joinGroup(String groupid) async {
     Map data = {
+      "groupid": groupid,
       "uid": FirebaseAuth.instance.currentUser.uid,
-      "groupid": groupid
     };
-    //enter this after the function is made
-    // final HttpsCallable callable =
-    //     CloudFunctions.instance.getHttpsCallable(functionName: null);
-    // final HttpsCallableResult response = await callable.call(data);
+    final HttpsCallable callable =
+        CloudFunctions.instance.getHttpsCallable(functionName: "joinGroup");
+    await callable.call(data).catchError((e) {
+      return e;
+    });
     return "Success";
   }
 
   @override
   Future<String> leaveGroup(String groupid) async {
     Map data = {
+      "groupid": groupid,
       "uid": FirebaseAuth.instance.currentUser.uid,
-      "groupid": groupid
     };
-    //enter this after the function is made
-    // final HttpsCallable callable =
-    //     CloudFunctions.instance.getHttpsCallable(functionName: null);
-    // final HttpsCallableResult response = await callable.call(data);
+    final HttpsCallable callable =
+        CloudFunctions.instance.getHttpsCallable(functionName: "leaveGroup");
+    await callable.call(data).catchError((e) {
+      return e;
+    });
     return "Success";
+  }
+
+  @override
+  Future<String> getGroupInfo(String groupid) {
+    // TODO: implement getGroupInfo
+    throw UnimplementedError();
   }
 }

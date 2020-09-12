@@ -31,8 +31,9 @@ class AuthRepositoryImpl implements AuthRepository {
     Map data = {
       "uid": _auth.currentUser.uid,
       "name": _auth.currentUser.displayName,
-      "upiId": "null",
-      "email": _auth.currentUser.email
+      "upiId": "",
+      "email": _auth.currentUser.email,
+      "profilePic": _auth.currentUser.photoURL
     };
 
     final HttpsCallable callable =
@@ -47,7 +48,8 @@ class AuthRepositoryImpl implements AuthRepository {
         email: _firebaseuser.email,
         name: _firebaseuser.displayName,
         photoURL: _firebaseuser.photoURL,
-        groups: response.data["groups"]));
+        groups: response.data["groups"], //shared preferences
+        upiID: response.data["upiId"])); //shared preferences
 
     return UserRepositoryImpl.getCurrentUser();
   }

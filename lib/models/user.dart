@@ -5,12 +5,13 @@ class UserDetails {
   final String email;
   final String name;
   final String photoURL;
-  final List<UserGroup> groups;
+  String upiID;
+  final List<String> groups;
 
-  UserDetails({
-    @required this.email,
-    @required this.name,
-    @required this.photoURL,
-    @required this.groups,
-  });
+  UserDetails(
+      {@required this.email,
+      @required this.name,
+      @required this.photoURL,
+      @required this.groups,
+      @required this.upiID});
 }
