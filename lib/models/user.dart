@@ -1,4 +1,3 @@
-import 'package:coconut_app/models/user_group.dart';
 import 'package:flutter/foundation.dart';
 
 class UserDetails {

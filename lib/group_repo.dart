@@ -50,10 +50,4 @@ class GroupRepositoryImpl implements GroupRepository {
     });
     return "Success";
   }
-
-  @override
-  Future<String> getGroupInfo(String groupid) {
-    // TODO: implement getGroupInfo
-    throw UnimplementedError();
-  }
 }

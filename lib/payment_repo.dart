@@ -1,23 +1,22 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coconut_app/models/pay_details.dart';
-import 'package:coconut_app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:upi_india/upi_india.dart';
 
 abstract class PaymentRepository {
-  Future<Map<UserDetails, String>> initiatePayment(PaymentDetails details,
+  Future<Map<String, String>> initiatePayment(PaymentDetails details,
       String groupId); // Returns a response, Success, Failure+error
-  Future<Map<UserDetails, String>> endTrip(String groupid);
+  Future<String> endTrip(String groupid);
 }
 
 class PaymentRepositoryImpl implements PaymentRepository {
   @override
-  Future<Map<UserDetails, String>> initiatePayment(
+  Future<Map<String, String>> initiatePayment(
       PaymentDetails details, String groupId) async {
     UpiIndia _upiIndia = UpiIndia();
     Map<String, String> response = {};
     response["Status"] = "Loading";
-    return _upiIndia
+    _upiIndia
         .startTransaction(
             app: UpiApp.GooglePay,
             receiverUpiId: details.recieverUpiID,
@@ -45,12 +44,10 @@ class PaymentRepositoryImpl implements PaymentRepository {
       } else {
         response["Status"] = "Success";
         Map data = {
-          "data": {
-            "groupId": groupId,
-            "transaction": {
-              "spender": FirebaseAuth.instance.currentUser.uid,
-              "amount": details.amount
-            }
+          "groupId": groupId,
+          "transaction": {
+            "spender": FirebaseAuth.instance.currentUser.uid,
+            "amount": details.amount
           }
         };
         final HttpsCallable callable = CloudFunctions.instance
@@ -61,11 +58,19 @@ class PaymentRepositoryImpl implements PaymentRepository {
         });
       }
     });
+    return response;
   }
 
   @override
-  Future<Map<UserDetails, String>> endTrip(String groupid) {
-    // TODO: implement endTrip
-    throw UnimplementedError();
+  Future<String> endTrip(String groupid) async {
+    Map<String, String> data = {
+      "groupId": groupid,
+    };
+    final HttpsCallable callable =
+        CloudFunctions.instance.getHttpsCallable(functionName: "endTrip");
+    await callable.call(data).catchError((e) {
+      return e;
+    });
+    return "Success";
   }
 }

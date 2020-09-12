@@ -20,7 +20,7 @@ class UserRepositoryImpl {
       "upiId": upiId
     };
     final HttpsCallable callable =
-        CloudFunctions.instance.getHttpsCallable(functionName: null);
+        CloudFunctions.instance.getHttpsCallable(functionName: "updateUser");
     await callable.call(data).catchError((e) {
       return e;
     });
@@ -31,5 +31,19 @@ class UserRepositoryImpl {
     _currentUser = user;
   }
 
-  static void refresh() {}
+  static Future<String> refresh() async {
+    Map<String, String> data = {};
+    HttpsCallable callable =
+        CloudFunctions.instance.getHttpsCallable(functionName: null);
+    await callable.call(data).catchError((e) {
+      return e;
+    });
+
+    data = {};
+    callable = CloudFunctions.instance.getHttpsCallable(functionName: null);
+    await callable.call(data).catchError((e) {
+      return e;
+    });
+    return "Success";
+  }
 }
