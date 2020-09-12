@@ -10,7 +10,7 @@ abstract class PaymentRepository {
   Future<Map<UserDetails, String>> endTrip(String groupid);
 }
 
-class Payment implements PaymentRepository {
+class PaymentRepositoryImpl implements PaymentRepository {
   @override
   Future<Map<UserDetails, String>> initiatePayment(
       PaymentDetails details, String groupId) async {
