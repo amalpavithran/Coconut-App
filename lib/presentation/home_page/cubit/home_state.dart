@@ -21,4 +21,4 @@ class JoinGroupSuccess extends HomeState {}
 
 class HomeCreateGroupSuccess extends HomeState {}
 
-class HomeCreateGroupFailure extends HomeState {}
+class Logout extends HomeState {}

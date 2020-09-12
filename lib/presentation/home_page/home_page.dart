@@ -20,37 +20,44 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Account'),
-        flexibleSpace: SizedBox(height: 200),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              iconSize: 35,
-              icon: Icon(Icons.account_circle, color: Colors.white),
-              onPressed: null,
+    return BlocProvider(
+          create: (BuildContext context) => sl<HomeCubit>(),
+          child: Scaffold(
+        appBar: AppBar(
+          title: Text('My Account'),
+          flexibleSpace: SizedBox(height: 200),
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                iconSize: 35,
+                icon: Icon(Icons.account_circle),
+                onPressed: (){
+                  BlocProvider.of<HomeCubit>(context).logout();
+                },
+              ),
             ),
-          ),
-        ],
-      ),
-      body: BlocProvider(
-        create: (context) => sl<HomeCubit>(),
-        child: SingleChildScrollView(
+            IconButton(icon: Icon(Icons.exit_to_app), onPressed: null)
+          ],
+        ),
+        body: SingleChildScrollView(
           child: BlocConsumer<HomeCubit, HomeState>(
-            listener: (context, state) {},
+            listener: (context, state) {
+              if(state is Logout){
+                Navigator.of(context).popAndPushNamed('/login');
+              }
+            },
             builder: (context, state) {
               return Column(
                 children: <Widget>[
-                  buildCreateNewGroupBtn(context),
+                  buildGroupBtns(context, state),
                   buildMakePaymentBtn(),
-                  _buildForm(state),
+                  buildForm(state),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text("Recents", style: title),
+                      child: Text("Active Groups", style: title),
                     ),
                   )
                 ],
@@ -62,7 +69,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildForm(HomeState state) {
+  Widget buildForm(HomeState state) {
     if (state is ShowCreateGroup) {
       return CreateGroupPage();
     } else if (state is ShowJoinGroup) {
@@ -91,7 +98,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildCreateNewGroupBtn(BuildContext context) {
+  Widget buildGroupBtns(BuildContext context, HomeState state) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -99,14 +106,18 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           RaisedButton(
-              color: Colors.green,
-              child: Text(
-                "Create New Group",
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: () {
+            color: Colors.green,
+            child: Text(
+              "Create New Group",
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              if (state is ShowCreateGroup)
+                BlocProvider.of<HomeCubit>(context).reset();
+              else
                 BlocProvider.of<HomeCubit>(context).createGroupInit();
-              }),
+            },
+          ),
           RaisedButton(
             color: Colors.blue[200],
             child: Text(
@@ -114,7 +125,10 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
-              BlocProvider.of<HomeCubit>(context).joinGroupInit();
+              if (state is ShowJoinGroup)
+                BlocProvider.of<HomeCubit>(context).reset();
+              else
+                BlocProvider.of<HomeCubit>(context).joinGroupInit();
             },
           )
         ],
