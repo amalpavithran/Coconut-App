@@ -11,6 +11,17 @@ abstract class AuthRepository {
 }
 
 class AuthRepositoryImpl implements AuthRepository {
+  Future<User> getUser() async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    final HttpsCallable callable =
+        CloudFunctions.instance.getHttpsCallable(functionName: "getUser");
+    final HttpsCallableResult response =
+        await callable.call({"uid": _auth.currentUser.uid}).catchError((e) {
+      return e;
+    });
+  }
+
   @override
   Future<String> login() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
@@ -34,19 +45,15 @@ class AuthRepositoryImpl implements AuthRepository {
       "email": _auth.currentUser.email
     };
 
-    final HttpsCallable callablelogin =
+    final HttpsCallable callable =
         CloudFunctions.instance.getHttpsCallable(functionName: "login");
-    final HttpsCallableResult res =
-        await callablelogin.call(data).catchError((e) {
+    final HttpsCallableResult response =
+        await callable.call(data).catchError((e) {
       return e;
     });
 
-    final HttpsCallable callable =
-        CloudFunctions.instance.getHttpsCallable(functionName: "getUser");
-    final HttpsCallableResult response =
-        await callable.call({"uid": _auth.currentUser.uid}).catchError((e) {
-      return e;
-    });
+    User user = await getUser();
+
     print(response.data);
 
     // final HttpsCallable callable =

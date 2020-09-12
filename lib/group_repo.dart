@@ -6,6 +6,7 @@ import 'models/user.dart';
 abstract class GroupRepository {
   Future<String> createGroup(String groupName, String description);
   Future<String> joinGroup(String groupid);
+  Future<String> leaveGroup(String groupid);
 }
 
 class Group implements GroupRepository {
@@ -36,5 +37,11 @@ class Group implements GroupRepository {
     //     CloudFunctions.instance.getHttpsCallable(functionName: null);
     // final HttpsCallableResult response = await callable.call(data);
     return "Success";
+  }
+
+  @override
+  Future<String> leaveGroup(String groupid) {
+    // TODO: implement leaveGroup
+    throw UnimplementedError();
   }
 }
