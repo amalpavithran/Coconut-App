@@ -1,4 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:coconut_app/models/transaction.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'models/user.dart';
@@ -32,18 +33,41 @@ class UserRepositoryImpl {
   }
 
   static Future<String> refresh() async {
-    Map<String, String> data = {};
+    Map<String, String> data = {"uid": FirebaseAuth.instance.currentUser.uid};
     HttpsCallable callable =
-        CloudFunctions.instance.getHttpsCallable(functionName: null);
-    await callable.call(data).catchError((e) {
+        CloudFunctions.instance.getHttpsCallable(functionName: "getUser");
+    final response = await callable.call(data).catchError((e) {
       return e;
     });
+    updateGroup(response.data["groups"]);
+    //update groupData
 
-    data = {};
-    callable = CloudFunctions.instance.getHttpsCallable(functionName: null);
-    await callable.call(data).catchError((e) {
-      return e;
-    });
     return "Success";
+  }
+
+  static void updateGroup(var groupData) {
+    List<UserGroup> groups = [];
+
+    for (var group in groupData) {
+      List<Map<UserDetails, double>> _groupInfo = [];
+      List<Transaction> _transactions;
+
+      for (var user in group["users"]) {
+        _groupInfo.add({
+          UserDetails(
+              email: user["email"],
+              name: user["name"],
+              photoURL: user["profilePic"],
+              upiID: user["upiId"]): user["amount"]
+        });
+      }
+      for (var transaction in group["transactions"]) {
+        _transactions
+            .add(Transaction(transaction["uid"], transaction["amount"]));
+      }
+
+      groups.add(UserGroup(
+          group["name"], group["groupId"], _groupInfo, _transactions));
+    }
   }
 }
