@@ -1,4 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:coconut_app/user_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class GroupRepository {
@@ -31,9 +32,11 @@ class GroupRepositoryImpl implements GroupRepository {
     };
     final HttpsCallable callable =
         CloudFunctions.instance.getHttpsCallable(functionName: "joinGroup");
-    await callable.call(data).catchError((e) {
+    final HttpsCallableResult response =
+        await callable.call(data).catchError((e) {
       return e;
     });
+    UserRepositoryImpl.addGroup(response.data);
     return "Success";
   }
 

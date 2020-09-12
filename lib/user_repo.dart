@@ -63,6 +63,42 @@ class UserRepositoryImpl {
     _groupData = groups;
   }
 
+  static void addGroup(Map<String, dynamic> groupData) {
+    // groupData = response.data
+
+    List<Map<UserDetails, double>> _groupInfo = [];
+    List<Transaction> _transactions = [];
+    List<PaymentDetails> _payments = [];
+    bool _ended = false;
+
+    for (var user in groupData["users"]) {
+      _groupInfo.add({
+        UserDetails(
+            email: user["email"],
+            name: user["name"],
+            photoURL: user["profilePic"],
+            upiID: user["upiId"]): groupData["credits"][user["uid"]]
+      });
+    }
+    for (var transaction in groupData["transactions"]) {
+      _transactions.add(Transaction(transaction["uid"], transaction["amount"]));
+    }
+
+    String groupName = groupData["name"];
+
+    for (var paymentdetail in groupData["payments"]) {
+      _ended = true;
+      _payments.add(PaymentDetails(
+          recieverUpiID: paymentdetail["upiId"],
+          recieverName: paymentdetail["name"],
+          transactionNote: "Dues for $groupName",
+          amount: paymentdetail["amount"]));
+    }
+
+    _groupData.add(UserGroup(groupData["name"], groupData["groupId"],
+        _groupInfo, _transactions, _payments, _ended));
+  }
+
   static Future<String> updateUPI(String upiId) async {
     _currentUser.upiID = upiId;
 
