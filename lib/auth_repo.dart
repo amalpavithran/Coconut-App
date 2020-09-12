@@ -49,7 +49,7 @@ class AuthRepositoryImpl implements AuthRepository {
         name: _firebaseuser.displayName,
         photoURL: _firebaseuser.photoURL,
         upiID: response.data["upiId"]));
-    UserRepositoryImpl.updateGroup(response.data["groups"]);
+    UserRepositoryImpl.updateGroup(response.data);
     return UserRepositoryImpl.getCurrentUser();
   }
 

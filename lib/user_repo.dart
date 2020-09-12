@@ -22,11 +22,11 @@ class UserRepositoryImpl {
     _currentUser = user;
   }
 
-  static void updateGroup(var groupData) {
+  static void updateGroup(Map<String, dynamic> groupData) {
     // groupData = response.data["groups"]
     List<UserGroup> groups = [];
 
-    for (var group in groupData) {
+    for (var group in groupData["groups"]) {
       List<Map<UserDetails, double>> _groupInfo = [];
       List<Transaction> _transactions = [];
       List<PaymentDetails> _payments = [];
@@ -85,7 +85,13 @@ class UserRepositoryImpl {
     final response = await callable.call(data).catchError((e) {
       return e;
     });
-    updateGroup(response.data["groups"]);
+    User _firebaseuser = FirebaseAuth.instance.currentUser;
+    updateUser(UserDetails(
+        email: _firebaseuser.email,
+        name: _firebaseuser.displayName,
+        photoURL: _firebaseuser.photoURL,
+        upiID: response.data["upiId"]));
+    updateGroup(response.data);
     //update groupData
 
     return "Success";
