@@ -6,7 +6,7 @@ import 'models/user.dart';
 
 abstract class AuthRepository {
   Future<String> login();
-  Future<bool> silentLogin();
+  bool silentLogin();
   Future<String> logout();
   Future<UserDetails> getUserDetails();
 }
@@ -78,7 +78,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<bool> silentLogin() async {
+  bool silentLogin() {
     return (FirebaseAuth.instance.currentUser != null ? true : false);
   }
 }

@@ -26,8 +26,6 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
       routes: {
         "/homepage": (context) => HomePage(),
-        "/joingroup": (context) => JoinGroup(),
-        "/creategroup": (context) => CreateGroupPage(),
       },
     );
   }
