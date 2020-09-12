@@ -2,11 +2,13 @@ import 'package:coconut_app/models/pay_details.dart';
 import 'package:coconut_app/models/user.dart';
 import 'package:coconut_app/payment_repo.dart';
 import 'package:coconut_app/presentation/cubit/home_cubit.dart';
+import 'package:coconut_app/presentation/home_page/create_group_page.dart';
+import 'package:coconut_app/presentation/home_page/join_group_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../injection_container.dart';
+import '../../injection_container.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -57,7 +59,15 @@ class _HomePageState extends State<HomePage> {
             children: groupWids,
           )),
     );
-
+    Widget _buildForm(HomeState state) {
+      if (state is ShowCreateGroup) {
+        return CreateGroupPage();
+      } else if (state is ShowJoinGroup) {
+        return JoinGroup();
+      } else {
+        return Container();
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -95,7 +105,8 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () {
-                              Navigator.pushNamed(context, '/creategroup');
+                              BlocProvider.of<HomeCubit>(context)
+                                  .createGroupInit();
                             }),
                         RaisedButton(
                           color: Colors.blue[200],
@@ -104,25 +115,31 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () {
-                            Navigator.pushNamed(context, '/joingroup');
+                            BlocProvider.of<HomeCubit>(context).joinGroupInit();
                           },
                         )
                       ],
                     ),
-                    
-                  ),RaisedButton(
-                          color: Colors.blue[200],
-                          child: Text(
-                            "Make Payment",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {
-                            sl<PaymentRepositoryImpl>().initiatePayment(PaymentDetails(recieverUpiID: 'amal110100@oksbi', recieverName: 'Amal Pavithran', transactionNote: 'Testing', amount: 1), 'test');
-                          },
-                        ),
+                  ),
+                  RaisedButton(
+                    color: Colors.blue[200],
+                    child: Text(
+                      "Make Payment",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      sl<PaymentRepositoryImpl>().initiatePayment(
+                          PaymentDetails(
+                              recieverUpiID: 'amal110100@oksbi',
+                              recieverName: 'Amal Pavithran',
+                              transactionNote: 'Testing',
+                              amount: 1),
+                          'test');
+                    },
+                  ),
+                  _buildForm(state),
                   groupList,
                 ],
-                
               );
             },
           ),
