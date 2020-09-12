@@ -1,4 +1,5 @@
 import 'package:coconut_app/group_repo.dart';
+import 'package:coconut_app/injection_container.dart';
 import 'package:flutter/material.dart';
 
 class CreateGroupPage extends StatefulWidget {
@@ -69,8 +70,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                       onPressed: () {
                         if(_formKey.currentState.validate()){
                           _formKey.currentState.save();
-                          final GroupRepository groupRepository = Group();
-                          groupRepository.createGroup(_groupName, _groupDesc);
+                          sl<GroupRepository>().createGroup(_groupName, _groupDesc);
                           Navigator.pop(context);
                         }
                       },

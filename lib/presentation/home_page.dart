@@ -1,12 +1,12 @@
-import 'package:coconut_app/group_repo.dart';
 import 'package:coconut_app/models/pay_details.dart';
 import 'package:coconut_app/models/user.dart';
 import 'package:coconut_app/payment_repo.dart';
 import 'package:coconut_app/presentation/cubit/home_cubit.dart';
-import 'package:coconut_app/presentation/join_group_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../injection_container.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: BlocProvider(
-        create: (context) => HomeCubit(Group()),
+        create: (context) => sl<HomeCubit>(),
         child: SingleChildScrollView(
           child: BlocConsumer<HomeCubit, HomeState>(
             listener: (context, state) {},
@@ -117,8 +117,7 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () {
-                            final PaymentRepository paymentRepository = Payment();
-                            paymentRepository.initiatePayment(PaymentDetails(recieverUpiID: 'amal110100@oksbi', recieverName: 'Amal Pavithran', transactionNote: 'Testing', amount: 1), 'test');
+                            sl<PaymentRepositoryImpl>().initiatePayment(PaymentDetails(recieverUpiID: 'amal110100@oksbi', recieverName: 'Amal Pavithran', transactionNote: 'Testing', amount: 1), 'test');
                           },
                         ),
                   groupList,

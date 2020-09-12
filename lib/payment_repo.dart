@@ -8,7 +8,7 @@ abstract class PaymentRepository {
       String groupId); // Returns a response, Success, Failure+error
 }
 
-class Payment implements PaymentRepository {
+class PaymentRepositoryImpl implements PaymentRepository {
   @override
   Future<Map<String, String>> initiatePayment(
       PaymentDetails details, String groupId) async {

@@ -8,7 +8,7 @@ abstract class GroupRepository {
   Future<String> joinGroup(String groupid);
 }
 
-class Group implements GroupRepository {
+class GroupRepositoryImpl implements GroupRepository {
   @override
   Future<String> createGroup(String groupName, String description) async {
     Map data = {
