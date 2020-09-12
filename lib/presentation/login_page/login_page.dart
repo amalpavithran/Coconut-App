@@ -1,4 +1,3 @@
-import 'package:coconut_app/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -6,18 +5,9 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import '../../injection_container.dart';
 import 'cubit/login_cubit.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   LoginPage({Key key}) : super(key: key);
 
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  @override
-  void initState() { 
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             SizedBox(
               height: MediaQuery.of(context).size.height,
-              child: Image.asset('assets/splash.png',fit: BoxFit.cover),
+              child: Image.asset('assets/splash.png', fit: BoxFit.cover),
             ),
             Align(
               alignment: Alignment.bottomCenter - Alignment(0, 0.15),
@@ -48,15 +38,12 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
                 listener: (BuildContext context, LoginState state) {
-                  if(state is LoginInitial){
-                    BlocProvider.of<LoginCubit>(context).silentLogin();
-                  }
                   if (state is LoginFailure) {
                     Scaffold.of(context)
                         .showSnackBar(SnackBar(content: Text(state.message)));
                   } else if (state is LoginSuccess) {
-                    Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text("Login Success")));
+                    Scaffold.of(context)
+                        .showSnackBar(SnackBar(content: Text("Login Success")));
                     Navigator.popAndPushNamed(context, '/homepage');
                   }
                 },
