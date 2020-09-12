@@ -14,7 +14,7 @@ import 'cubit/home_cubit.dart';
 
 class HomePage extends StatefulWidget {
   final UserDetails userDetails;
-  const HomePage(this.userDetails,{Key key}) : super(key: key);
+  const HomePage(this.userDetails, {Key key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState(userDetails);
@@ -30,43 +30,61 @@ class _HomePageState extends State<HomePage> {
     return BlocProvider(
       create: (BuildContext context) => sl<HomeCubit>(),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Coconut'),
-          actions: actions(context),
-        ),
-        body: SingleChildScrollView(
-          child: BlocConsumer<HomeCubit, HomeState>(
-            listener: (context, state) {
-              if (state is Logout) {
-                Navigator.of(context).popAndPushNamed('/login');
-              }
-            },
-            builder: (context, state) {
-              return Column(
-                children: <Widget>[
-                  buildGroupBtns(context, state),
-                  buildMakePaymentBtn(),
-                  buildForm(state),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Active Groups", style: title),
-                    ),
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              title: Text("Coconut"),
+              expandedHeight: 150,
+              flexibleSpace: BlocBuilder<HomeCubit, HomeState>(
+                  builder: (BuildContext context, state) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    buildGroupBtns(context, state),
+                    // buildMakePaymentBtn(),
+                    SizedBox(
+                      height: 20,
+                    )
+                  ],
+                );
+              }),
+              actions: actions(context),
+            ),
+            BlocConsumer<HomeCubit, HomeState>(
+              listener: (context, state) {
+                if (state is Logout) {
+                  Navigator.of(context).popAndPushNamed('/login');
+                }
+              },
+              builder: (context, state) {
+                return SliverToBoxAdapter(
+                  child: Column(
+                    children: <Widget>[
+                      buildForm(state),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text("Active Groups", style: title),
+                        ),
+                      ),
+                    ],
                   ),
-                  // GridView.count(
-                  //   crossAxisCount: 4,
-                  //   children: <Widget>[
-                  //     CircleAvatar(backgroundColor: Colors.black,child: Text('A')),
-                  //     CircleAvatar(child: Text('A')),
-                  //     CircleAvatar(child: Text('A')),
-                  //     CircleAvatar(child: Text('A'))
-                  //   ],
-                  // ),
-                ],
-              );
-            },
-          ),
+                );
+              },
+            ),
+            SliverGrid.count(
+              crossAxisCount: 4,
+              crossAxisSpacing: 10,
+              children: List<Widget>.generate(
+                8,
+                (index) => Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Hero(tag: index,child: CircleAvatar()),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -121,40 +139,37 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildGroupBtns(BuildContext context, HomeState state) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          RaisedButton(
-            color: Colors.green,
-            child: Text(
-              "Create New Group",
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () {
-              if (state is ShowCreateGroup)
-                BlocProvider.of<HomeCubit>(context).reset();
-              else
-                BlocProvider.of<HomeCubit>(context).createGroupInit();
-            },
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        RaisedButton(
+          color: Colors.green,
+          child: Text(
+            "Create Group",
+            style: TextStyle(color: Colors.white),
           ),
-          RaisedButton(
-            color: Colors.blue[200],
-            child: Text(
-              "Join a Group",
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () {
-              if (state is ShowJoinGroup)
-                BlocProvider.of<HomeCubit>(context).reset();
-              else
-                BlocProvider.of<HomeCubit>(context).joinGroupInit();
-            },
-          )
-        ],
-      ),
+          onPressed: () {
+            if (state is ShowCreateGroup)
+              BlocProvider.of<HomeCubit>(context).reset();
+            else
+              BlocProvider.of<HomeCubit>(context).createGroupInit();
+          },
+        ),
+        RaisedButton(
+          color: Colors.blue[200],
+          child: Text(
+            "Join a Group",
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () {
+            if (state is ShowJoinGroup)
+              BlocProvider.of<HomeCubit>(context).reset();
+            else
+              BlocProvider.of<HomeCubit>(context).joinGroupInit();
+          },
+        )
+      ],
     );
   }
 }
