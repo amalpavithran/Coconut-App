@@ -38,7 +38,7 @@ class UserRepositoryImpl {
               email: user["email"],
               name: user["name"],
               photoURL: user["profilePic"],
-              upiID: user["upiId"]): user["amount"]
+              upiID: user["upiId"]): group["credits"][user["uid"]]
         });
       }
       for (var transaction in group["transactions"]) {
