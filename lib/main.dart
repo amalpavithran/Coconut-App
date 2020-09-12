@@ -1,6 +1,6 @@
-import 'package:coconut_app/presentation/create_group_page.dart';
-import 'package:coconut_app/presentation/home_page.dart';
-import 'package:coconut_app/presentation/join_group_page.dart';
+import 'package:coconut_app/presentation/home_page/create_group_page.dart';
+import 'package:coconut_app/presentation/home_page/home_page.dart';
+import 'package:coconut_app/presentation/home_page/join_group_page.dart';
 import 'package:coconut_app/presentation/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

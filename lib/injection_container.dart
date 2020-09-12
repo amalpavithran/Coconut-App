@@ -11,7 +11,7 @@ Future<void> init() async{
   sl.registerFactory(() => LoginCubit(sl()));
   sl.registerFactory(() => HomeCubit(sl()));
   
-  sl.registerLazySingleton(() => AuthRepositoryImpl());
-  sl.registerLazySingleton(() => GroupRepositoryImpl());
-  sl.registerLazySingleton(() => PaymentRepositoryImpl());
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
+  sl.registerLazySingleton<GroupRepository>(() => GroupRepositoryImpl());
+  sl.registerLazySingleton<PaymentRepository>(() => PaymentRepositoryImpl());
 }
