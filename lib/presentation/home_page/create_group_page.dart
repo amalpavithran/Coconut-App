@@ -53,7 +53,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                 decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.black)),
-                    labelText: "Group ID",
+                    labelText: "Group description",
                     border: OutlineInputBorder()),
               ),
               Container(

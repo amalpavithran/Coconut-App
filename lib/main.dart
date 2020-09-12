@@ -1,6 +1,7 @@
 import 'package:coconut_app/auth_repo.dart';
 import 'package:coconut_app/presentation/home_page/home_page.dart';
 import 'package:coconut_app/presentation/login_page/login_page.dart';
+import 'package:coconut_app/user_repo.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'injection_container.dart' as di;
@@ -25,14 +26,13 @@ class MyApp extends StatelessWidget {
       home: buildHome(),
       routes: {
         "/login": (context) => LoginPage(),
-        "/homepage": (context) => HomePage(),
       },
     );
   }
 
   Widget buildHome() {
     if (di.sl<AuthRepository>().silentLogin()) {
-      return HomePage();
+      return HomePage(di.sl<UserRepository>().getCurrentUser());
     } else {
       return LoginPage();
     }

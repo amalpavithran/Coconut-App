@@ -9,8 +9,8 @@ import 'package:get_it/get_it.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  sl.registerFactory(() => LoginCubit(sl()));
-  sl.registerFactory(() => HomeCubit(sl(), sl()));
+  sl.registerFactory(() => LoginCubit(sl(), sl()));
+  sl.registerFactory(() => HomeCubit(sl(), sl(), sl()));
 
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
   sl.registerLazySingleton<GroupRepository>(() => GroupRepositoryImpl(sl()));

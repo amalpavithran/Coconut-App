@@ -7,7 +7,7 @@ import 'models/user.dart';
 import 'models/user_group.dart';
 
 abstract class UserRepository {
-  Future<UserDetails> getCurrentUser();
+  UserDetails getCurrentUser();
   Future<List<UserGroup>> getGroupData();
   Future<void> updateUser(UserDetails user);
   Future<void> updateGroup(Map<String, dynamic> groupData);
@@ -21,7 +21,7 @@ class UserRepositoryImpl implements UserRepository {
   static List<UserGroup> _groupData;
 
   @override
-  Future<UserDetails> getCurrentUser() async {
+  UserDetails getCurrentUser() {
     return _currentUser;
   }
 

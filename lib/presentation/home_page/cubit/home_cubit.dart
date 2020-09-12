@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:coconut_app/auth_repo.dart';
 import 'package:coconut_app/group_repo.dart';
+import 'package:coconut_app/user_repo.dart';
 import 'package:meta/meta.dart';
 
 part 'home_state.dart';
@@ -8,37 +9,47 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final GroupRepository groupRepository;
   final AuthRepository authRepository;
-  HomeCubit(this.groupRepository, this.authRepository) : super(HomeInitial());
-  void joinGroupInit(){
+  final UserRepository userRepository;
+  HomeCubit(this.groupRepository, this.authRepository, this.userRepository) : super(HomeInitial());
+  void joinGroupInit() {
     emit(ShowJoinGroup());
   }
-  void createGroupInit(){
+
+  void createGroupInit() {
     emit(ShowCreateGroup());
   }
-  void reset(){
+
+  void reset() {
+    
     emit(HomeInitial());
   }
-  void logout(){
-    authRepository.logout();
+
+  void logout() {
+    try {
+      authRepository.logout();
+    } catch (e) {
+      emit(HomeFailure(e.toString()));
+    }
     emit(Logout());
   }
 
-  void joinGroup(String groupId){
+  void joinGroup(String groupId) {
     emit(JoinGroupLoading());
-    try{
+    try {
       groupRepository.joinGroup(groupId);
       emit(JoinGroupSuccess());
-    }catch(e){
+    } catch (e) {
       print(e);
       emit(HomeFailure(e.toString()));
     }
   }
-  void createGroup(String groupName,String description){
+
+  void createGroup(String groupName, String description) {
     emit(JoinGroupLoading());
-    try{
+    try {
       groupRepository.createGroup(groupName, description);
       emit(JoinGroupSuccess());
-    }catch(e){
+    } catch (e) {
       print(e);
       emit(HomeFailure(e.toString()));
     }

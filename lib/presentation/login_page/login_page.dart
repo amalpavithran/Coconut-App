@@ -1,3 +1,4 @@
+import 'package:coconut_app/presentation/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -42,9 +43,17 @@ class LoginPage extends StatelessWidget {
                     Scaffold.of(context)
                         .showSnackBar(SnackBar(content: Text(state.message)));
                   } else if (state is LoginSuccess) {
-                    Scaffold.of(context)
-                        .showSnackBar(SnackBar(content: Text("Login Success")));
-                    Navigator.popAndPushNamed(context, '/homepage');
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Login Success"),
+                      ),
+                    );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomePage(state.user),
+                      ),
+                    );
                   }
                 },
               ),

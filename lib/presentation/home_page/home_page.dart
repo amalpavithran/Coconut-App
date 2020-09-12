@@ -1,7 +1,9 @@
 import 'package:coconut_app/models/pay_details.dart';
+import 'package:coconut_app/models/user.dart';
 import 'package:coconut_app/payment_repo.dart';
 import 'package:coconut_app/presentation/home_page/create_group_page.dart';
 import 'package:coconut_app/presentation/home_page/join_group_page.dart';
+import 'package:coconut_app/user_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,39 +13,31 @@ import '../styles.dart';
 import 'cubit/home_cubit.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+  final UserDetails userDetails;
+  const HomePage(this.userDetails,{Key key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(userDetails);
 }
 
 class _HomePageState extends State<HomePage> {
+  final UserDetails userDetails;
+
+  _HomePageState(this.userDetails);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-          create: (BuildContext context) => sl<HomeCubit>(),
-          child: Scaffold(
+      create: (BuildContext context) => sl<HomeCubit>(),
+      child: Scaffold(
         appBar: AppBar(
-          title: Text('My Account'),
-          flexibleSpace: SizedBox(height: 200),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                iconSize: 35,
-                icon: Icon(Icons.account_circle),
-                onPressed: (){
-                  BlocProvider.of<HomeCubit>(context).logout();
-                },
-              ),
-            ),
-            IconButton(icon: Icon(Icons.exit_to_app), onPressed: null)
-          ],
+          title: Text('Coconut'),
+          actions: actions(context),
         ),
         body: SingleChildScrollView(
           child: BlocConsumer<HomeCubit, HomeState>(
             listener: (context, state) {
-              if(state is Logout){
+              if (state is Logout) {
                 Navigator.of(context).popAndPushNamed('/login');
               }
             },
@@ -59,7 +53,18 @@ class _HomePageState extends State<HomePage> {
                       alignment: Alignment.topLeft,
                       child: Text("Active Groups", style: title),
                     ),
-                  )
+                  ),
+                  // Expanded(
+                  //   child: GridView.count(
+                  //     crossAxisCount: 4,
+                  //     children: <Widget>[
+                  //       CircleAvatar(child: Text('A')),
+                  //       CircleAvatar(child: Text('A')),
+                  //       CircleAvatar(child: Text('A')),
+                  //       CircleAvatar(child: Text('A'))
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               );
             },
@@ -67,6 +72,24 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  List<Widget> actions(BuildContext context) {
+    return <Widget>[
+      IconButton(
+        icon: Icon(Icons.exit_to_app),
+        onPressed: () {
+          BlocProvider.of<HomeCubit>(context).logout();
+        },
+      ),
+      IconButton(
+        iconSize: 35,
+        icon: CircleAvatar(),
+        onPressed: () {
+          BlocProvider.of<HomeCubit>(context).logout();
+        },
+      ),
+    ];
   }
 
   Widget buildForm(HomeState state) {
