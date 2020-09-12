@@ -1,4 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:coconut_app/user_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -41,19 +42,14 @@ class AuthRepositoryImpl implements AuthRepository {
       return e;
     });
 
-    UserDetails _user = await getCurrentUser();
+    User _firebaseuser = _auth.currentUser;
+    UserRepositoryImpl.updateUser(UserDetails(
+        email: _firebaseuser.email,
+        name: _firebaseuser.displayName,
+        photoURL: _firebaseuser.photoURL,
+        groups: response.data["groups"]));
 
-    print(response.data);
-
-    // final HttpsCallable callable =
-    //     CloudFunctions.instance.getHttpsCallable(functionName: "endTrip");
-    // final HttpsCallableResult response = await callable.call().catchError((e) {
-    //   return e;
-    // });
-    // if (response.data["message"] == "Ended") {
-    //   //Implement get payments
-    // }
-    return _user;
+    return UserRepositoryImpl.getCurrentUser();
   }
 
   @override
@@ -62,17 +58,6 @@ class AuthRepositoryImpl implements AuthRepository {
       return e;
     });
     return "Success";
-  }
-
-  @override
-  Future<UserDetails> getCurrentUser() async {
-    User _user = FirebaseAuth.instance.currentUser;
-    UserDetails userDetails = UserDetails(
-        email: _user.email,
-        name: _user.displayName,
-        photoURL: _user.photoURL,
-        groups: []); //TODO:Implement getting groups
-    return userDetails;
   }
 
   @override
