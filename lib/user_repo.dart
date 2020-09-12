@@ -6,23 +6,37 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'models/user.dart';
 import 'models/user_group.dart';
 
-class UserRepositoryImpl {
+abstract class UserRepository {
+  Future<UserDetails> getCurrentUser();
+  Future<List<UserGroup>> getGroupData();
+  Future<void> updateUser(UserDetails user);
+  Future<void> updateGroup(Map<String, dynamic> groupData);
+  Future<void> addGroup(Map<String, dynamic> groupData);
+  Future<String> updateUPI(String upiId);
+  Future<String> refresh();
+}
+
+class UserRepositoryImpl implements UserRepository {
   static UserDetails _currentUser;
   static List<UserGroup> _groupData;
 
-  static UserDetails getCurrentUser() {
+  @override
+  Future<UserDetails> getCurrentUser() async {
     return _currentUser;
   }
 
-  static List<UserGroup> getGroupData() {
+  @override
+  Future<List<UserGroup>> getGroupData() async {
     return _groupData;
   }
 
-  static void updateUser(UserDetails user) {
+  @override
+  Future<void> updateUser(UserDetails user) async {
     _currentUser = user;
   }
 
-  static void updateGroup(Map<String, dynamic> groupData) {
+  @override
+  Future<void> updateGroup(Map<String, dynamic> groupData) async {
     // groupData = response.data["groups"]
     List<UserGroup> groups = [];
 
@@ -63,7 +77,8 @@ class UserRepositoryImpl {
     _groupData = groups;
   }
 
-  static void addGroup(Map<String, dynamic> groupData) {
+  @override
+  Future<void> addGroup(Map<String, dynamic> groupData) async {
     // groupData = response.data
 
     List<Map<UserDetails, double>> _groupInfo = [];
@@ -99,7 +114,8 @@ class UserRepositoryImpl {
         _groupInfo, _transactions, _payments, _ended));
   }
 
-  static Future<String> updateUPI(String upiId) async {
+  @override
+  Future<String> updateUPI(String upiId) async {
     _currentUser.upiID = upiId;
 
     Map<String, String> data = {
@@ -114,7 +130,8 @@ class UserRepositoryImpl {
     return "Success";
   }
 
-  static Future<String> refresh() async {
+  @override
+  Future<String> refresh() async {
     Map<String, String> data = {"uid": FirebaseAuth.instance.currentUser.uid};
     HttpsCallable callable =
         CloudFunctions.instance.getHttpsCallable(functionName: "getUser");
