@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:coconut_app/user_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,7 +33,7 @@ class AuthRepositoryImpl implements AuthRepository {
       throw UnsupportedError(e);
     });
 
-    Map<String,dynamic> data = {
+    Map<String, dynamic> data = {
       "uid": _auth.currentUser.uid,
       "name": _auth.currentUser.displayName,
       "upiId": "",
@@ -43,17 +45,18 @@ class AuthRepositoryImpl implements AuthRepository {
         CloudFunctions.instance.getHttpsCallable(functionName: "login");
     final HttpsCallableResult response =
         await callable.call(data).catchError((e) {
-          print(e);
+      print(e);
       throw UnsupportedError(e);
     });
-
+    print(response.data);
     User _firebaseuser = _auth.currentUser;
     userRepository.updateUser(UserDetails(
         email: _firebaseuser.email,
         name: _firebaseuser.displayName,
         photoURL: _firebaseuser.photoURL,
-        upiID: response.data["upiId"]));
-    userRepository.updateGroup(response.data);
+        upiID: ""));
+    //TODO: Fix this shitty line
+    //userRepository.updateGroup(response.data);
     return userRepository.getCurrentUser();
   }
 
