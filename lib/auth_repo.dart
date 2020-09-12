@@ -8,7 +8,6 @@ import 'models/user.dart';
 abstract class AuthRepository {
   Future<UserDetails> login();
   Future<String> logout();
-  bool silentLogin();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -28,10 +27,11 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     await _auth.signInWithCredential(credential).catchError((e) {
+      print(e);
       throw UnsupportedError(e);
     });
 
-    Map data = {
+    Map<String,dynamic> data = {
       "uid": _auth.currentUser.uid,
       "name": _auth.currentUser.displayName,
       "upiId": "",
@@ -43,6 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
         CloudFunctions.instance.getHttpsCallable(functionName: "login");
     final HttpsCallableResult response =
         await callable.call(data).catchError((e) {
+          print(e);
       throw UnsupportedError(e);
     });
 
@@ -62,10 +63,5 @@ class AuthRepositoryImpl implements AuthRepository {
       throw UnsupportedError(e);
     });
     return "Success";
-  }
-
-  @override
-  bool silentLogin() {
-    return (FirebaseAuth.instance.currentUser != null ? true : false);
   }
 }

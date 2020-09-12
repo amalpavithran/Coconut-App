@@ -54,16 +54,14 @@ class _HomePageState extends State<HomePage> {
                       child: Text("Active Groups", style: title),
                     ),
                   ),
-                  // Expanded(
-                  //   child: GridView.count(
-                  //     crossAxisCount: 4,
-                  //     children: <Widget>[
-                  //       CircleAvatar(child: Text('A')),
-                  //       CircleAvatar(child: Text('A')),
-                  //       CircleAvatar(child: Text('A')),
-                  //       CircleAvatar(child: Text('A'))
-                  //     ],
-                  //   ),
+                  // GridView.count(
+                  //   crossAxisCount: 4,
+                  //   children: <Widget>[
+                  //     CircleAvatar(backgroundColor: Colors.black,child: Text('A')),
+                  //     CircleAvatar(child: Text('A')),
+                  //     CircleAvatar(child: Text('A')),
+                  //     CircleAvatar(child: Text('A'))
+                  //   ],
                   // ),
                 ],
               );
@@ -75,6 +73,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> actions(BuildContext context) {
+    print(userDetails.photoURL);
     return <Widget>[
       IconButton(
         icon: Icon(Icons.exit_to_app),
@@ -84,7 +83,7 @@ class _HomePageState extends State<HomePage> {
       ),
       IconButton(
         iconSize: 35,
-        icon: CircleAvatar(),
+        icon: CircleAvatar(backgroundImage: NetworkImage(userDetails.photoURL)),
         onPressed: () {
           BlocProvider.of<HomeCubit>(context).logout();
         },

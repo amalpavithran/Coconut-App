@@ -31,8 +31,10 @@ class MyApp extends StatelessWidget {
   }
 
   Widget buildHome() {
-    if (di.sl<AuthRepository>().silentLogin()) {
-      return HomePage(di.sl<UserRepository>().getCurrentUser());
+    final user = di.sl<UserRepository>().getCurrentUser();
+    print(user);
+    if (user != null) {
+      return HomePage(user);
     } else {
       return LoginPage();
     }
