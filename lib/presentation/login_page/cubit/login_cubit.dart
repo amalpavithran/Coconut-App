@@ -6,9 +6,9 @@ part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final AuthRepository authRepository;
-  LoginCubit(this.authRepository) : super(LoginInitial());
+  LoginCubit(this.authRepository): super(LoginInitial());
 
-  void init() async{
+  void silentLogin() async{
     emit(LoginLoading());
     if(await authRepository.silentLogin()){
       emit(LoginSuccess());
