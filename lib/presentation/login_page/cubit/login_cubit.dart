@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:coconut_app/auth_repo.dart';
+import 'package:coconut_app/models/user.dart';
 import 'package:meta/meta.dart';
 
 part 'login_state.dart';
@@ -10,7 +11,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   void silentLogin() async{
     emit(LoginLoading());
-    if(await authRepository.silentLogin()){
+    if(authRepository.silentLogin()){
       emit(LoginSuccess());
     }else{
       SilentLoginFailure();
@@ -21,10 +22,10 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginLoading());
     try {
       final result = await authRepository.login();
-      if (result == "Success") {
+      if (result is UserDetails) {
         emit(LoginSuccess());
       } else {
-        emit(LoginFailure(result));
+        emit(LoginFailure(""));
       }
     } catch (e) {
       print(e);

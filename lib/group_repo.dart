@@ -1,4 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:coconut_app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class GroupRepository {
@@ -8,6 +9,17 @@ abstract class GroupRepository {
 }
 
 class GroupRepositoryImpl implements GroupRepository {
+  Future<UserDetails> _getUserDetails() async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    final HttpsCallable callable =
+        CloudFunctions.instance.getHttpsCallable(functionName: "getUser");
+    final HttpsCallableResult response =
+        await callable.call({"uid": _auth.currentUser.uid}).catchError((e) {
+      return e;
+    });
+  }
+
   @override
   Future<String> createGroup(String groupName, String description) async {
     Map data = {
@@ -38,8 +50,15 @@ class GroupRepositoryImpl implements GroupRepository {
   }
 
   @override
-  Future<String> leaveGroup(String groupid) {
-    // TODO: implement leaveGroup
-    throw UnimplementedError();
+  Future<String> leaveGroup(String groupid) async {
+    Map data = {
+      "uid": FirebaseAuth.instance.currentUser.uid,
+      "groupid": groupid
+    };
+    //enter this after the function is made
+    // final HttpsCallable callable =
+    //     CloudFunctions.instance.getHttpsCallable(functionName: null);
+    // final HttpsCallableResult response = await callable.call(data);
+    return "Success";
   }
 }
