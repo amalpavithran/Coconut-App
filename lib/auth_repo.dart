@@ -11,7 +11,8 @@ abstract class AuthRepository {
 }
 
 class AuthRepositoryImpl implements AuthRepository {
-  Future<User> getUser() async {
+  @override
+  Future<UserDetails> getUserDetails() async {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
     final HttpsCallable callable =
@@ -52,7 +53,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return e;
     });
 
-    User user = await getUser();
+    UserDetails user = await getUserDetails();
 
     print(response.data);
 
@@ -73,16 +74,5 @@ class AuthRepositoryImpl implements AuthRepository {
       return e;
     });
     return "Success";
-  }
-
-  @override
-  Future<UserDetails> getUserDetails() async {
-    User _user = FirebaseAuth.instance.currentUser;
-    UserDetails userDetails = UserDetails(
-        email: _user.email,
-        name: _user.displayName,
-        photoURL: _user.photoURL,
-        groups: []); //TODO:Implement getting groups
-    return userDetails;
   }
 }
