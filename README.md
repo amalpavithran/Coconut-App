@@ -5,7 +5,6 @@ An app for enjoying your trips without worrying about bill spilts
 - Once the trip is over the the app will generate UPI links with the accurate amount of money to be paid to each of your friends
 - No more busting out the old calculator
 - As easy as click & pay
-- 
 
 
 Right now supports only Google Pay (Other Providers coming soon)
