@@ -19,6 +19,7 @@ class AccountPage extends StatelessWidget {
           slivers: <Widget>[
             SliverAppBar(
               title: Text('My Account'),
+              floating: true,
               expandedHeight: 200,
               flexibleSpace: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
