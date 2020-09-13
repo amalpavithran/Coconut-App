@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:coconut_app/models/user.dart';
 import 'package:coconut_app/presentation/account_page/cubit/account_cubit.dart';
 import 'package:coconut_app/presentation/account_page/user_details.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../injection_container.dart';
 
 class AccountPage extends StatelessWidget {
-  const AccountPage({Key key}) : super(key: key);
+  final UserDetails userDetails;
+  const AccountPage(this.userDetails, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +21,20 @@ class AccountPage extends StatelessWidget {
           slivers: <Widget>[
             SliverAppBar(
               title: Text('My Account'),
-              floating: true,
+              // floating: true,
               expandedHeight: 200,
               flexibleSpace: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[UserDetailsCard()],
               ),
+              actions: <Widget>[
+                IconButton(
+                  iconSize: 40,
+                  icon: CircleAvatar(
+                      backgroundImage: NetworkImage(userDetails.photoURL)),
+                  onPressed: () {},
+                )
+              ],
             ),
             buildRecentTransactions()
           ],
@@ -36,8 +46,9 @@ class AccountPage extends StatelessWidget {
   SliverToBoxAdapter buildRecentTransactions() {
     Widget textColor() {
       final generator = Random();
-      final value =
-          generator.nextDouble()*generator.nextInt(100) * (-1 * (generator.nextBool() ? -1 : 1));
+      final value = generator.nextDouble() *
+          generator.nextInt(100) *
+          (-1 * (generator.nextBool() ? -1 : 1));
       MaterialColor color;
       String prefix;
       if (value < 0) {
@@ -47,11 +58,12 @@ class AccountPage extends StatelessWidget {
         color = Colors.green;
         prefix = '+';
       }
-      return Text(prefix + value.toStringAsFixed(2), style: TextStyle(color: color));
+      return Text(prefix + value.toStringAsFixed(2),
+          style: TextStyle(color: color));
     }
 
     final items = List.generate(
-      4,
+      10,
       (index) => Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),

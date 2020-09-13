@@ -2,9 +2,9 @@ import 'package:coconut_app/models/pay_details.dart';
 import 'package:coconut_app/models/user.dart';
 import 'package:coconut_app/payment_repo.dart';
 import 'package:coconut_app/presentation/account_page/account_page.dart';
-import 'package:coconut_app/presentation/home_page/create_group_page.dart';
-import 'package:coconut_app/presentation/home_page/join_group_page.dart';
-import 'package:coconut_app/user_repo.dart';
+import 'package:coconut_app/presentation/group_page/group_page.dart';
+import 'package:coconut_app/presentation/home_page/create_group.dart';
+import 'package:coconut_app/presentation/home_page/join_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,18 +74,24 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SliverGrid.count(
-              crossAxisCount: 4,
-              crossAxisSpacing: 10,
-              children: List<Widget>.generate(
-                8,
-                (index) => Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Hero(tag: index, child: CircleAvatar()),
-                ),
-              ),
-            )
+            buildActiveGroups()
           ],
+        ),
+      ),
+    );
+  }
+
+  SliverGrid buildActiveGroups() {
+    return SliverGrid.count(
+      crossAxisCount: 4,
+      crossAxisSpacing: 10,
+      children: List<Widget>.generate(
+        8,
+        (index) => IconButton(
+          icon: Hero(tag: index, child: CircleAvatar()),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> GroupPage(tag: index)));
+          },
         ),
       ),
     );
@@ -101,11 +107,13 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       IconButton(
-        iconSize: 35,
+        iconSize: 40,
         icon: CircleAvatar(backgroundImage: NetworkImage(userDetails.photoURL)),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AccountPage()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AccountPage(userDetails)));
         },
       ),
     ];
@@ -121,6 +129,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  //TODO:Marked for Deletion
   Widget buildMakePaymentBtn() {
     return RaisedButton(
       color: Colors.blue[200],
