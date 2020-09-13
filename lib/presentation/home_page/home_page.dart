@@ -1,5 +1,6 @@
 import 'package:coconut_app/models/pay_details.dart';
 import 'package:coconut_app/models/user.dart';
+import 'package:coconut_app/models/user_group.dart';
 import 'package:coconut_app/payment_repo.dart';
 import 'package:coconut_app/presentation/account_page/account_page.dart';
 import 'package:coconut_app/presentation/group_page/group_page.dart';
@@ -82,6 +83,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   SliverGrid buildActiveGroups() {
+    final tUserData = UserDetails(
+        email: 'hemanth@gmail.com',
+        name: 'Hemanth',
+        photoURL: null,
+        upiID: 'amal110100@oksbi');
+    List<Map<UserDetails, double>> userdata = List.generate(4, (index) {
+      final map = Map<UserDetails, double>();
+      map[tUserData] = 0.0;
+      return map;
+    });
+    final UserGroup userGroup =
+        UserGroup('test', '1234', userdata, [], [], false);
     return SliverGrid.count(
       crossAxisCount: 4,
       crossAxisSpacing: 10,
@@ -90,7 +103,13 @@ class _HomePageState extends State<HomePage> {
         (index) => IconButton(
           icon: Hero(tag: index, child: CircleAvatar()),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> GroupPage(tag: index)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GroupPage(
+                          tag: index,
+                          userGroup: userGroup,
+                        )));
           },
         ),
       ),
