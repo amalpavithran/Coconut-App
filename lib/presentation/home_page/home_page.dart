@@ -1,6 +1,7 @@
 import 'package:coconut_app/models/pay_details.dart';
 import 'package:coconut_app/models/user.dart';
 import 'package:coconut_app/payment_repo.dart';
+import 'package:coconut_app/presentation/account_page/account_page.dart';
 import 'package:coconut_app/presentation/home_page/create_group_page.dart';
 import 'package:coconut_app/presentation/home_page/join_group_page.dart';
 import 'package:coconut_app/user_repo.dart';
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                 8,
                 (index) => Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Hero(tag: index,child: CircleAvatar()),
+                  child: Hero(tag: index, child: CircleAvatar()),
                 ),
               ),
             )
@@ -103,7 +104,8 @@ class _HomePageState extends State<HomePage> {
         iconSize: 35,
         icon: CircleAvatar(backgroundImage: NetworkImage(userDetails.photoURL)),
         onPressed: () {
-          BlocProvider.of<HomeCubit>(context).logout();
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AccountPage()));
         },
       ),
     ];

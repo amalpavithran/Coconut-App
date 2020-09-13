@@ -1,6 +1,8 @@
 import 'package:coconut_app/auth_repo.dart';
 import 'package:coconut_app/group_repo.dart';
 import 'package:coconut_app/payment_repo.dart';
+import 'package:coconut_app/presentation/account_page/cubit/user_details_cubit.dart';
+import 'package:coconut_app/presentation/group_page/cubit/group_cubit.dart';
 import 'package:coconut_app/presentation/home_page/cubit/home_cubit.dart';
 import 'package:coconut_app/presentation/login_page/cubit/login_cubit.dart';
 import 'package:coconut_app/user_repo.dart';
@@ -11,7 +13,9 @@ final sl = GetIt.instance;
 Future<void> init() async {
   sl.registerFactory(() => LoginCubit(sl(), sl()));
   sl.registerFactory(() => HomeCubit(sl(), sl(), sl()));
-
+  sl.registerFactory(() => GroupCubit());
+  sl.registerFactory(() => UserDetailsCubit());
+  
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
   sl.registerLazySingleton<GroupRepository>(() => GroupRepositoryImpl(sl()));
   sl.registerLazySingleton<PaymentRepository>(() => PaymentRepositoryImpl());
