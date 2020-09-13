@@ -1,10 +1,10 @@
 
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:coconut_app/user_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'models/user.dart';
+import '../../models/user.dart';
+import 'user_repo.dart';
 
 abstract class AuthRepository {
   Future<UserDetails> login();

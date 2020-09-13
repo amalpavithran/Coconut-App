@@ -1,9 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:coconut_app/models/user.dart';
-import 'package:coconut_app/user_repo.dart';
 import 'package:meta/meta.dart';
 
 import '../../../injection_container.dart';
+import '../../repos/user_repo.dart';
 
 part 'account_state.dart';
 

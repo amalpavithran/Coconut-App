@@ -1,18 +1,18 @@
-import 'package:coconut_app/models/pay_details.dart';
-import 'package:coconut_app/models/user.dart';
-import 'package:coconut_app/models/user_group.dart';
-import 'package:coconut_app/payment_repo.dart';
-import 'package:coconut_app/presentation/account_page/account_page.dart';
-import 'package:coconut_app/presentation/group_page/group_page.dart';
-import 'package:coconut_app/presentation/home_page/create_group.dart';
-import 'package:coconut_app/presentation/home_page/join_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../injection_container.dart';
+import '../../models/pay_details.dart';
+import '../../models/user.dart';
+import '../../models/user_group.dart';
+import '../account_page/account_page.dart';
+import '../group_page/group_page.dart';
+import '../repos/payment_repo.dart';
 import '../styles.dart';
+import 'create_group.dart';
 import 'cubit/home_cubit.dart';
+import 'join_group.dart';
 
 class HomePage extends StatefulWidget {
   final UserDetails userDetails;

@@ -1,11 +1,11 @@
-import 'package:coconut_app/models/user.dart';
-import 'package:coconut_app/presentation/account_page/cubit/account_cubit.dart';
-import 'package:coconut_app/presentation/account_page/cubit/user_details_cubit.dart';
-import 'package:coconut_app/user_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../injection_container.dart';
+import '../../models/user.dart';
+import '../repos/user_repo.dart';
+import 'cubit/account_cubit.dart';
+import 'cubit/user_details_cubit.dart';
 
 class UserDetailsCard extends StatefulWidget {
   UserDetailsCard({Key key}) : super(key: key);

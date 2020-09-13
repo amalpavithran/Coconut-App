@@ -1,9 +1,9 @@
-import 'package:coconut_app/presentation/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import '../../injection_container.dart';
+import '../home_page/home_page.dart';
 import 'cubit/login_cubit.dart';
 
 class LoginPage extends StatelessWidget {

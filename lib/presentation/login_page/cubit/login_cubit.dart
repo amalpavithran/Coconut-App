@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:coconut_app/auth_repo.dart';
-import 'package:coconut_app/models/user.dart';
-import 'package:coconut_app/user_repo.dart';
 import 'package:meta/meta.dart';
+
+import '../../repos/auth_repo.dart';
+import '../../../models/user.dart';
+import '../../repos/user_repo.dart';
 
 part 'login_state.dart';
 

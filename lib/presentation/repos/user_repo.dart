@@ -1,10 +1,11 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:coconut_app/models/pay_details.dart';
-import 'package:coconut_app/models/transaction.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'models/user.dart';
-import 'models/user_group.dart';
+import '../../models/pay_details.dart';
+import '../../models/transaction.dart';
+import '../../models/user.dart';
+import '../../models/user_group.dart';
+
 
 abstract class UserRepository {
   UserDetails getCurrentUser();

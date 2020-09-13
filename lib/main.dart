@@ -1,10 +1,11 @@
-import 'package:coconut_app/auth_repo.dart';
-import 'package:coconut_app/presentation/home_page/home_page.dart';
-import 'package:coconut_app/presentation/login_page/login_page.dart';
-import 'package:coconut_app/user_repo.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
 import 'injection_container.dart' as di;
+import 'presentation/home_page/home_page.dart';
+import 'presentation/login_page/login_page.dart';
+import 'presentation/repos/user_repo.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

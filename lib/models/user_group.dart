@@ -1,6 +1,6 @@
-import 'package:coconut_app/models/pay_details.dart';
-import 'package:coconut_app/models/transaction.dart';
-import 'package:coconut_app/models/user.dart';
+import 'pay_details.dart';
+import 'transaction.dart';
+import 'user.dart';
 
 class UserGroup {
   final String name;

@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import 'package:coconut_app/models/user.dart';
-import 'package:coconut_app/presentation/account_page/cubit/account_cubit.dart';
-import 'package:coconut_app/presentation/account_page/user_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../injection_container.dart';
+import '../../models/user.dart';
+import 'cubit/account_cubit.dart';
+import 'user_details.dart';
 
 class AccountPage extends StatelessWidget {
   final UserDetails userDetails;

@@ -1,9 +1,9 @@
-import 'package:coconut_app/models/user_group.dart';
-import 'package:coconut_app/presentation/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../injection_container.dart';
+import '../../models/user_group.dart';
+import '../styles.dart';
 import 'cubit/group_cubit.dart';
 
 class GroupPage extends StatelessWidget {
